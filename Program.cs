@@ -24,7 +24,15 @@ namespace YoutubePlayer
                 .WriteTo.File("error.log")
                 .CreateLogger();
 
-            if (File.Exists(AppDomain.CurrentDomain.FriendlyName + ".back")) File.Delete(AppDomain.CurrentDomain.FriendlyName + ".back");
+            try
+            {
+                if (File.Exists(AppDomain.CurrentDomain.FriendlyName + ".back")) File.Delete(AppDomain.CurrentDomain.FriendlyName + ".back");
+            }
+            catch (System.UnauthorizedAccessException)
+            {
+            }
+
+
 
             var values = new Dictionary<string, string>
             {
