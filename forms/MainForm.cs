@@ -46,11 +46,15 @@ namespace YoutubePlayer
                 switch (id)
                 {
                     case 1:
+                        if (lstResults.Items.Count == 0 || curIndex== 0)
+                            return;
                         curIndex -= 1;
                         lstResults.SelectedIndex = curIndex;
                         PlayFileAsync(curIndex);
                         break;
                     case 2:
+                        if (lstResults.Items.Count == 0 || curIndex + 1 == lstResults.Items.Count)
+                            return;
                         curIndex += 1;
                         lstResults.SelectedIndex = curIndex;
                         PlayFileAsync(curIndex);
@@ -108,6 +112,7 @@ namespace YoutubePlayer
                     lstResults.Items.Add(data);
                 }
                 Console.Beep(2000, 100);
+                lstResults.SelectedIndex = 0;
                 lstResults.Focus();
             }
             }
@@ -140,13 +145,21 @@ switch (e.KeyData) {
 private async Task PlayFileAsync(int currentIndex)
     {
         Bass.BASS_StreamFree(stream);
-        var streamInfoSet = await client.GetVideoMediaStreamInfosAsync(videos[currentIndex].Id);
-        var streamInfo = streamInfoSet.Muxed.WithHighestVideoQuality();
-        syncCallback = new SYNCPROC(OnSongFinished);
-        stream = Bass.BASS_StreamCreateURL(streamInfo.Url, 0, 0, null, IntPtr.Zero);
-        Bass.BASS_ChannelSetAttribute(stream, BASSAttribute.BASS_ATTRIB_VOL, tbVolume.Value / 100f);
-        Bass.BASS_ChannelSetSync(stream, BASSSync.BASS_SYNC_END, 0, syncCallback, IntPtr.Zero);
-        Bass.BASS_ChannelPlay(stream, false);
+            try
+            {
+                var streamInfoSet = await client.GetVideoMediaStreamInfosAsync(videos[currentIndex].Id);
+                var streamInfo = streamInfoSet.Muxed.WithHighestVideoQuality();
+                syncCallback = new SYNCPROC(OnSongFinished);
+                stream = Bass.BASS_StreamCreateURL(streamInfo.Url, 0, 0, null, IntPtr.Zero);
+                Bass.BASS_ChannelSetAttribute(stream, BASSAttribute.BASS_ATTRIB_VOL, tbVolume.Value / 100f);
+                Bass.BASS_ChannelSetSync(stream, BASSSync.BASS_SYNC_END, 0, syncCallback, IntPtr.Zero);
+                Bass.BASS_ChannelPlay(stream, false);
+            }
+            catch (YoutubeExplode.Exceptions.VideoUnplayableException ex)
+            {
+                MessageBox.Show($"Видео не может быть воспроизведено, {ex.Message}", "Ошибка");
+                return;
+            }
     }
 
     private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
