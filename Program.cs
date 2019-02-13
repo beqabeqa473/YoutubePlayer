@@ -24,6 +24,8 @@ namespace YoutubePlayer
                 .WriteTo.File("error.log")
                 .CreateLogger();
 
+            if (File.Exists(AppDomain.CurrentDomain.FriendlyName + ".back")) File.Delete(AppDomain.CurrentDomain.FriendlyName + ".back");
+
             var values = new Dictionary<string, string>
             {
             {"method", "checkupdate"}
@@ -36,7 +38,7 @@ namespace YoutubePlayer
             DialogResult changesDialog = InputBox.Show("Доступно обновление", $"новая версия {update.Version} {Application.ProductName} доступна для скачивания. нажмите ok для скачивания и установки данного обновления, или отмену для последующей установки.", ref value, true, true);
             if (changesDialog == DialogResult.OK)
             {
-            System.IO.File.Move(AppDomain.CurrentDomain.FriendlyName, AppDomain.CurrentDomain.FriendlyName + ".back");
+                    File.Move(AppDomain.CurrentDomain.FriendlyName, AppDomain.CurrentDomain.FriendlyName + ".back");
             using (var wC = new WebClient())
             {
             wC.DownloadFileCompleted += new AsyncCompletedEventHandler(UpdateCompleted);
