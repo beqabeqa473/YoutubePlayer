@@ -106,6 +106,11 @@ namespace YoutubePlayer
                 e.SuppressKeyPress = true;
                 lstResults.Items.Clear();
                 videos = await client.SearchVideosAsync(txtSearch.Text);
+                if (videos.Count == 0)
+                {
+                    MessageBox.Show("Ничего не найдено", "Ошибка");
+                    return;
+                }
                 foreach (var video in videos)
                 {
                     string data = $"{video.Title} - {video.Duration.ToString()}";
