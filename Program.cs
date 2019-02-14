@@ -52,8 +52,15 @@ namespace YoutubePlayer
                     using (var wC = new WebClient())
             {
             wC.DownloadFileCompleted += new AsyncCompletedEventHandler(UpdateCompleted);
-            await wC.DownloadFileTaskAsync(new Uri(update.Download), AppDomain.CurrentDomain.FriendlyName);
-            }
+                        try
+                        {
+                            await wC.DownloadFileTaskAsync(new Uri(update.Download), AppDomain.CurrentDomain.FriendlyName);
+                        }
+                        catch (System.Net.WebException) {
+                            MessageBox.Show("По некоторым причинам не удалось автоматически обновить программы. Откроется браузер для скачивания файла.", "Ошибка");
+                            System.Diagnostics.Process.Start(update.Download);
+}
+                        }
             }
             else
             {
