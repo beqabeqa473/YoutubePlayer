@@ -288,7 +288,7 @@ private async Task PlayFileAsync(int currentIndex)
 
         private void cmOpenInBrowser_Click(object sender, EventArgs e)
         {
-            if (lstResults.SelectedIndex == 0)
+            if (lstResults.Items.Count == 0)
                 return;
                 System.Diagnostics.Process.Start($"https://youtube.com/watch?v={videos[lstResults.SelectedIndex].Id}");
         }
