@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Un4seen.Bass;
 using YoutubeExplode;
+using YoutubeExplode.Models;
 using YoutubeExplode.Models.MediaStreams;
 
 namespace YoutubePlayer
@@ -15,7 +16,7 @@ namespace YoutubePlayer
         private int stream = 0;
         private int curIndex = 0;
         private readonly YoutubeClient client;
-        private IReadOnlyList<YoutubeExplode.Models.Video> videos;
+        private IReadOnlyList<Video> videos;
         private SYNCPROC syncCallback;
 
         public MainForm()
@@ -283,6 +284,13 @@ private async Task PlayFileAsync(int currentIndex)
         private void mbExit_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void cmOpenInBrowser_Click(object sender, EventArgs e)
+        {
+            if (lstResults.SelectedIndex == 0)
+                return;
+                System.Diagnostics.Process.Start($"https://youtube.com/watch?v={videos[lstResults.SelectedIndex].Id}");
         }
     }
 }

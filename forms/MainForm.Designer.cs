@@ -46,10 +46,13 @@
             this.mbReportIssue = new System.Windows.Forms.ToolStripMenuItem();
             this.mbExit = new System.Windows.Forms.ToolStripMenuItem();
             this.tmSeek = new System.Windows.Forms.Timer(this.components);
+            this.cmResults = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cmOpenInBrowser = new System.Windows.Forms.ToolStripMenuItem();
             this.MainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbVolume)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbSeek)).BeginInit();
             this.mbMain.SuspendLayout();
+            this.cmResults.SuspendLayout();
             this.SuspendLayout();
             // 
             // MainPanel
@@ -116,6 +119,7 @@
             // lstResults
             // 
             this.MainPanel.SetColumnSpan(this.lstResults, 2);
+            this.lstResults.ContextMenuStrip = this.cmResults;
             this.lstResults.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstResults.FormattingEnabled = true;
             this.lstResults.Location = new System.Drawing.Point(283, 237);
@@ -246,6 +250,20 @@
             this.tmSeek.Interval = 1000;
             this.tmSeek.Tick += new System.EventHandler(this.Timer1_Tick);
             // 
+            // cmResults
+            // 
+            this.cmResults.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmOpenInBrowser});
+            this.cmResults.Name = "cmResults";
+            this.cmResults.Size = new System.Drawing.Size(184, 26);
+            // 
+            // cmOpenInBrowser
+            // 
+            this.cmOpenInBrowser.Name = "cmOpenInBrowser";
+            this.cmOpenInBrowser.Size = new System.Drawing.Size(183, 22);
+            this.cmOpenInBrowser.Text = "Открыть в браузере";
+            this.cmOpenInBrowser.Click += new System.EventHandler(this.cmOpenInBrowser_Click);
+            // 
             // MainForm
             // 
             this.AccessibleRole = System.Windows.Forms.AccessibleRole.Dialog;
@@ -263,6 +281,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.tbSeek)).EndInit();
             this.mbMain.ResumeLayout(false);
             this.mbMain.PerformLayout();
+            this.cmResults.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -286,5 +305,7 @@
         private System.Windows.Forms.ToolStripMenuItem mbFile;
         private System.Windows.Forms.ToolStripMenuItem mbReportIssue;
         private System.Windows.Forms.ToolStripMenuItem mbExit;
+        private System.Windows.Forms.ContextMenuStrip cmResults;
+        private System.Windows.Forms.ToolStripMenuItem cmOpenInBrowser;
     }
 }
