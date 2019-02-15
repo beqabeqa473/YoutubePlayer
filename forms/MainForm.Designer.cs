@@ -34,6 +34,10 @@
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.lbResults = new System.Windows.Forms.Label();
             this.lstResults = new System.Windows.Forms.ListBox();
+            this.cmResults = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cmOpenInBrowser = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmCopyToClipboard = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmDownloadMp3 = new System.Windows.Forms.ToolStripMenuItem();
             this.lbMain = new System.Windows.Forms.Label();
             this.lbVolume = new System.Windows.Forms.Label();
             this.tbVolume = new System.Windows.Forms.TrackBar();
@@ -45,14 +49,14 @@
             this.mbFile = new System.Windows.Forms.ToolStripMenuItem();
             this.mbReportIssue = new System.Windows.Forms.ToolStripMenuItem();
             this.mbExit = new System.Windows.Forms.ToolStripMenuItem();
+            this.lbDescription = new System.Windows.Forms.Label();
+            this.txtDescription = new System.Windows.Forms.TextBox();
             this.tmSeek = new System.Windows.Forms.Timer(this.components);
-            this.cmResults = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.cmOpenInBrowser = new System.Windows.Forms.ToolStripMenuItem();
             this.MainPanel.SuspendLayout();
+            this.cmResults.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbVolume)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbSeek)).BeginInit();
             this.mbMain.SuspendLayout();
-            this.cmResults.SuspendLayout();
             this.SuspendLayout();
             // 
             // MainPanel
@@ -73,6 +77,8 @@
             this.MainPanel.Controls.Add(this.lbDevice, 2, 4);
             this.MainPanel.Controls.Add(this.cbDevice, 2, 5);
             this.MainPanel.Controls.Add(this.mbMain, 0, 1);
+            this.MainPanel.Controls.Add(this.lbDescription, 2, 2);
+            this.MainPanel.Controls.Add(this.txtDescription, 2, 3);
             this.MainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainPanel.Location = new System.Drawing.Point(0, 0);
             this.MainPanel.Name = "MainPanel";
@@ -108,25 +114,54 @@
             // lbResults
             // 
             this.lbResults.AutoSize = true;
-            this.MainPanel.SetColumnSpan(this.lbResults, 2);
             this.lbResults.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lbResults.Location = new System.Drawing.Point(283, 162);
             this.lbResults.Name = "lbResults";
-            this.lbResults.Size = new System.Drawing.Size(514, 72);
+            this.lbResults.Size = new System.Drawing.Size(234, 72);
             this.lbResults.TabIndex = 3;
             this.lbResults.Text = "Результаты поиска";
             // 
             // lstResults
             // 
-            this.MainPanel.SetColumnSpan(this.lstResults, 2);
             this.lstResults.ContextMenuStrip = this.cmResults;
             this.lstResults.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstResults.FormattingEnabled = true;
             this.lstResults.Location = new System.Drawing.Point(283, 237);
             this.lstResults.Name = "lstResults";
-            this.lstResults.Size = new System.Drawing.Size(514, 66);
+            this.lstResults.Size = new System.Drawing.Size(234, 66);
             this.lstResults.TabIndex = 4;
+            this.lstResults.SelectedIndexChanged += new System.EventHandler(this.lstResults_SelectedIndexChanged);
             this.lstResults.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lstResults_KeyDownAsync);
+            // 
+            // cmResults
+            // 
+            this.cmResults.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmOpenInBrowser,
+            this.cmCopyToClipboard,
+            this.cmDownloadMp3});
+            this.cmResults.Name = "cmResults";
+            this.cmResults.Size = new System.Drawing.Size(275, 70);
+            // 
+            // cmOpenInBrowser
+            // 
+            this.cmOpenInBrowser.Name = "cmOpenInBrowser";
+            this.cmOpenInBrowser.Size = new System.Drawing.Size(274, 22);
+            this.cmOpenInBrowser.Text = "Открыть в браузере";
+            this.cmOpenInBrowser.Click += new System.EventHandler(this.cmOpenInBrowser_Click);
+            // 
+            // cmCopyToClipboard
+            // 
+            this.cmCopyToClipboard.Name = "cmCopyToClipboard";
+            this.cmCopyToClipboard.Size = new System.Drawing.Size(274, 22);
+            this.cmCopyToClipboard.Text = "Копировать ссылку в буфер обмена";
+            this.cmCopyToClipboard.Click += new System.EventHandler(this.cmCopyToClipboard_Click);
+            // 
+            // cmDownloadMp3
+            // 
+            this.cmDownloadMp3.Name = "cmDownloadMp3";
+            this.cmDownloadMp3.Size = new System.Drawing.Size(274, 22);
+            this.cmDownloadMp3.Text = "Скачать в mp3";
+            this.cmDownloadMp3.Click += new System.EventHandler(this.cmDownloadMp3_ClickAsync);
             // 
             // lbMain
             // 
@@ -147,7 +182,7 @@
             this.lbVolume.Location = new System.Drawing.Point(3, 306);
             this.lbVolume.Name = "lbVolume";
             this.lbVolume.Size = new System.Drawing.Size(274, 72);
-            this.lbVolume.TabIndex = 5;
+            this.lbVolume.TabIndex = 7;
             this.lbVolume.Text = "Громкость";
             // 
             // tbVolume
@@ -158,7 +193,7 @@
             this.tbVolume.Maximum = 100;
             this.tbVolume.Name = "tbVolume";
             this.tbVolume.Size = new System.Drawing.Size(274, 66);
-            this.tbVolume.TabIndex = 6;
+            this.tbVolume.TabIndex = 8;
             this.tbVolume.Value = 50;
             this.tbVolume.Scroll += new System.EventHandler(this.tbVolume_Scroll);
             this.tbVolume.ValueChanged += new System.EventHandler(this.tbVolume_ValueChanged);
@@ -170,7 +205,7 @@
             this.lbSeek.Location = new System.Drawing.Point(283, 306);
             this.lbSeek.Name = "lbSeek";
             this.lbSeek.Size = new System.Drawing.Size(234, 72);
-            this.lbSeek.TabIndex = 7;
+            this.lbSeek.TabIndex = 9;
             this.lbSeek.Text = "Перемотка";
             // 
             // tbSeek
@@ -180,7 +215,7 @@
             this.tbSeek.Maximum = 100;
             this.tbSeek.Name = "tbSeek";
             this.tbSeek.Size = new System.Drawing.Size(234, 66);
-            this.tbSeek.TabIndex = 8;
+            this.tbSeek.TabIndex = 10;
             this.tbSeek.Scroll += new System.EventHandler(this.tbSeek_Scroll);
             // 
             // lbDevice
@@ -190,7 +225,7 @@
             this.lbDevice.Location = new System.Drawing.Point(523, 306);
             this.lbDevice.Name = "lbDevice";
             this.lbDevice.Size = new System.Drawing.Size(274, 72);
-            this.lbDevice.TabIndex = 9;
+            this.lbDevice.TabIndex = 11;
             this.lbDevice.Text = "Устройство вывода";
             // 
             // cbDevice
@@ -201,7 +236,7 @@
             this.cbDevice.Location = new System.Drawing.Point(523, 381);
             this.cbDevice.Name = "cbDevice";
             this.cbDevice.Size = new System.Drawing.Size(274, 21);
-            this.cbDevice.TabIndex = 10;
+            this.cbDevice.TabIndex = 12;
             this.cbDevice.SelectedIndexChanged += new System.EventHandler(this.cbDevice_SelectedIndexChanged);
             // 
             // mbMain
@@ -213,7 +248,7 @@
             this.mbMain.Location = new System.Drawing.Point(0, 90);
             this.mbMain.Name = "mbMain";
             this.mbMain.Size = new System.Drawing.Size(800, 24);
-            this.mbMain.TabIndex = 11;
+            this.mbMain.TabIndex = 13;
             this.mbMain.Text = "Меню";
             // 
             // mbFile
@@ -244,25 +279,31 @@
             this.mbExit.Text = "Выход";
             this.mbExit.Click += new System.EventHandler(this.mbExit_Click);
             // 
+            // lbDescription
+            // 
+            this.lbDescription.AutoSize = true;
+            this.lbDescription.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lbDescription.Location = new System.Drawing.Point(523, 162);
+            this.lbDescription.Name = "lbDescription";
+            this.lbDescription.Size = new System.Drawing.Size(274, 72);
+            this.lbDescription.TabIndex = 4;
+            this.lbDescription.Text = "Описание";
+            // 
+            // txtDescription
+            // 
+            this.txtDescription.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtDescription.Location = new System.Drawing.Point(523, 237);
+            this.txtDescription.Multiline = true;
+            this.txtDescription.Name = "txtDescription";
+            this.txtDescription.ReadOnly = true;
+            this.txtDescription.Size = new System.Drawing.Size(274, 66);
+            this.txtDescription.TabIndex = 5;
+            // 
             // tmSeek
             // 
             this.tmSeek.Enabled = true;
             this.tmSeek.Interval = 1000;
             this.tmSeek.Tick += new System.EventHandler(this.Timer1_Tick);
-            // 
-            // cmResults
-            // 
-            this.cmResults.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cmOpenInBrowser});
-            this.cmResults.Name = "cmResults";
-            this.cmResults.Size = new System.Drawing.Size(184, 26);
-            // 
-            // cmOpenInBrowser
-            // 
-            this.cmOpenInBrowser.Name = "cmOpenInBrowser";
-            this.cmOpenInBrowser.Size = new System.Drawing.Size(183, 22);
-            this.cmOpenInBrowser.Text = "Открыть в браузере";
-            this.cmOpenInBrowser.Click += new System.EventHandler(this.cmOpenInBrowser_Click);
             // 
             // MainForm
             // 
@@ -277,11 +318,11 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.MainPanel.ResumeLayout(false);
             this.MainPanel.PerformLayout();
+            this.cmResults.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tbVolume)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbSeek)).EndInit();
             this.mbMain.ResumeLayout(false);
             this.mbMain.PerformLayout();
-            this.cmResults.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -307,5 +348,9 @@
         private System.Windows.Forms.ToolStripMenuItem mbExit;
         private System.Windows.Forms.ContextMenuStrip cmResults;
         private System.Windows.Forms.ToolStripMenuItem cmOpenInBrowser;
+        private System.Windows.Forms.ToolStripMenuItem cmCopyToClipboard;
+        private System.Windows.Forms.ToolStripMenuItem cmDownloadMp3;
+        private System.Windows.Forms.Label lbDescription;
+        private System.Windows.Forms.TextBox txtDescription;
     }
 }

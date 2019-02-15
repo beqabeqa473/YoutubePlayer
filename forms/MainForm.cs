@@ -1,6 +1,10 @@
-﻿using Serilog;
+﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -204,7 +208,7 @@ private async Task PlayFileAsync(int currentIndex)
                         return true;
                     }
                 case Keys.Control | Keys.Right:
-                    if (txtSearch.Focused)
+                    if (txtSearch.Focused || txtDescription.Focused)
                     {
                         break;
                     }
@@ -223,7 +227,7 @@ private async Task PlayFileAsync(int currentIndex)
                         }
                     }
                 case Keys.Control | Keys.Left:
-                    if (txtSearch.Focused)
+                    if (txtSearch.Focused || txtDescription.Focused)
                     {
                         break;
                     }
@@ -291,6 +295,53 @@ private async Task PlayFileAsync(int currentIndex)
             if (lstResults.Items.Count == 0)
                 return;
                 System.Diagnostics.Process.Start($"https://youtube.com/watch?v={videos[lstResults.SelectedIndex].Id}");
+        }
+
+        private void cmCopyToClipboard_Click(object sender, EventArgs e)
+        {
+            if (lstResults.Items.Count == 0)
+                return;
+            Clipboard.SetText($"https://youtube.com/watch?v={videos[lstResults.SelectedIndex].Id}");
+        }
+
+        private async void cmDownloadMp3_ClickAsync(object sender, EventArgs e)
+        {
+            if (lstResults.Items.Count == 0)
+                return;
+            Console.Beep(500, 500);
+            var values = new Dictionary<string, string>
+            {
+            {"method", "getmp3"},
+            {"id", videos[lstResults.SelectedIndex].Id.ToString()}
+            };
+            string response = await HttpRequest.GetRequest(values);
+            var json = JObject.Parse(response);
+            if (!(bool)json["error"])
+            {
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
+                using (var wC = new WebClient())
+                {
+                    wC.DownloadFileCompleted += new AsyncCompletedEventHandler(DownloadCompletedAsync);
+                    await wC.DownloadFileTaskAsync(new Uri(json["file"].ToString()), Path.GetInvalidFileNameChars().Aggregate($"{videos[lstResults.SelectedIndex].Title}.mp3", (current, c) => current.Replace(c.ToString(), string.Empty)));
+                }
+        }
+    }
+
+        private async void DownloadCompletedAsync(object sender, AsyncCompletedEventArgs e)
+        {
+            Console.Beep(1000, 500);
+            var values = new Dictionary<string, string>
+            {
+            {"method", "delete"},
+            {"id", videos[lstResults.SelectedIndex].Id.ToString()}
+            };
+            string response = await HttpRequest.GetRequest(values);
+        }
+
+        private void lstResults_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            txtDescription.Text = videos[lstResults.SelectedIndex].Description;
         }
     }
 }
