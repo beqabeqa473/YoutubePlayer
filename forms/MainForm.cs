@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Un4seen.Bass;
@@ -313,6 +314,13 @@ private async Task PlayFileAsync(int currentIndex)
         {
             if (lstResults.Items.Count == 0)
                 return;
+            Thread t = new Thread(CopyLink);
+            t.IsBackground = true;
+            t.SetApartmentState(ApartmentState.STA);
+            t.Start();
+        }
+
+        private void CopyLink() {
             Clipboard.SetText($"https://youtube.com/watch?v={videos[lstResults.SelectedIndex].Id}");
         }
 
