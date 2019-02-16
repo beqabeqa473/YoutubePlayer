@@ -20,7 +20,7 @@ namespace YoutubePlayer
         private int stream = 0;
         private int curIndex = 0;
         private readonly YoutubeClient client;
-        private IReadOnlyList<Video> videos;
+        private List<Video> videos;
         private SYNCPROC syncCallback;
 
         public MainForm()
@@ -110,24 +110,36 @@ namespace YoutubePlayer
                     return;
                 e.SuppressKeyPress = true;
                 lstResults.Items.Clear();
-                videos = await client.SearchVideosAsync(txtSearch.Text);
-                if (videos.Count == 0)
+                videos = new List<Video>();
+for (var page = 1; page <+ int.MaxValue; page++) {
+                    var tempVideos = await client.SearchVideosAsync(txtSearch.Text, page);
+                if (page == 1 && tempVideos.Count == 0)
                 {
-                    MessageBox.Show("Ничего не найдено", "Ошибка");
-                    return;
+                MessageBox.Show("Ничего не найдено", "Ошибка");
+                break;
                 }
-                foreach (var video in videos)
+                    var countDelta = 0;
+                    foreach (var video in tempVideos)
                 {
-                    string data = $"{video.Title} - {video.Duration.ToString()}";
-                    lstResults.Items.Add(data);
-                }
-                Console.Beep(2000, 100);
-                lstResults.SelectedIndex = 0;
-                lstResults.Focus();
-            }
-            }
+                        videos.Add(video);
+                        string data = $"{video.Title} - {video.Duration.ToString()}";
+                lstResults.Items.Add(data);
+                        countDelta++;
+                    }
+                    if (page == 1 && videos.Count > 0)
+                    {
+                        Console.Beep(2000, 100);
+                        lstResults.SelectedIndex = 0;
+                        lstResults.Focus();
+                    }
 
-        private async void lstResults_KeyDownAsync(object sender, KeyEventArgs e)
+                    if (countDelta <= 0)
+                                            break;
+                                }
+            }
+        }
+
+private async void lstResults_KeyDownAsync(object sender, KeyEventArgs e)
         {
 switch (e.KeyData) {
                 case Keys.Enter:
