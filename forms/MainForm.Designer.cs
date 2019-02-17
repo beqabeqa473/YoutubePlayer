@@ -130,7 +130,7 @@
             this.lstResults.Name = "lstResults";
             this.lstResults.Size = new System.Drawing.Size(234, 66);
             this.lstResults.TabIndex = 4;
-            this.lstResults.SelectedIndexChanged += new System.EventHandler(this.lstResults_SelectedIndexChanged);
+            this.lstResults.SelectedIndexChanged += new System.EventHandler(this.lstResults_SelectedIndexChangedAsync);
             this.lstResults.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lstResults_KeyDownAsync);
             // 
             // cmResults

@@ -39,7 +39,6 @@ namespace YoutubePlayer
         private void btnCancel_Click(object sender, EventArgs e)
         {
             Close();
-            throw new ArgumentOutOfRangeException("1", "volume cannot be more         ");
                 }
 
         private void txtComment_KeyDown(object sender, KeyEventArgs e)

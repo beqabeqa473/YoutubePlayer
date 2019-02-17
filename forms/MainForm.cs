@@ -359,9 +359,10 @@ private async Task PlayFileAsync(int currentIndex)
             string response = await HttpRequest.GetRequest(values);
         }
 
-        private void lstResults_SelectedIndexChanged(object sender, EventArgs e)
+        private async void lstResults_SelectedIndexChangedAsync(object sender, EventArgs e)
         {
-            txtDescription.Text = videos[lstResults.SelectedIndex].Description;
+            var vid = await client.GetVideoAsync(videos[lstResults.SelectedIndex].Id);
+            txtDescription.Text = vid.Description;
         }
     }
 }

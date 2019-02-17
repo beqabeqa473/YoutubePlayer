@@ -23,7 +23,8 @@ namespace YoutubePlayer
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.File("error.log")
                 .CreateLogger();
-
+            Log.Information($"Using os: {getOSInfo()}");
+            Log.Information($"Software version: {Version.Parse(Application.ProductVersion).ToString()}");
             try
             {
                 if (File.Exists(AppDomain.CurrentDomain.FriendlyName + ".back")) File.Delete(AppDomain.CurrentDomain.FriendlyName + ".back");
@@ -89,26 +90,10 @@ namespace YoutubePlayer
         static async Task HandleExceptionsAsync(Exception e)
         {
             Log.Error(e.ToString());
-            DialogResult dialogResult = MessageBox.Show($"Возникла непредвиденная ошибка: {e.Message}. Нажмите Да для отправки сообщения об этой ошибке и продолжить работы, или Нет для выхода из приложения. Также вы можете отправить содержимое файла \"Error.log\" из окна \"Сообщить об ошибке\"", "Ошибка", MessageBoxButtons.YesNo);
+            DialogResult dialogResult = MessageBox.Show($"Возникла непредвиденная ошибка: {e.Message}. Нажмите Да сто бы продолжить работы, или Нет для выхода из приложения. Пожалуйста отправьте отчет из окна \"Сообщить об ошибке\", подробно описав ошибку и приложив содержимое файла \"Error.log\"", "Ошибка", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.No)
             {
                 Environment.Exit(0);
-            }
-            else if (dialogResult == DialogResult.Yes)
-            {
-                string body = $"Reported by Reporter bot {Environment.NewLine}{e.ToString()}{Environment.NewLine}Version: {Version.Parse(Application.ProductVersion).ToString()}{Environment.NewLine}OS: {getOSInfo()}";
-                var values = new Dictionary<string, string>
-{
-{"method", "reportissue"},
-{"title", e.Message},
-{"body", body}
-};
-                string response = await HttpRequest.GetRequest(values);
-                JObject json = JObject.Parse(response);
-                if (json["number"] != null)
-                {
-                    MessageBox.Show($"Создана заявка с номером {json["number"].ToString()}. Мы постараемся устранить проблему или Воплотить ваше пожелание в реальность. Вы всегда можете отследить заявку по ссылке: \"{json["html_url"].ToString()}\". Пожалуйста, сохраните ссылку для последующего использования.", "Спасибо");
-                }
             }
         }
 
