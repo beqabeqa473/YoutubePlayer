@@ -78,6 +78,9 @@
   <ItemGroup>
     <Compile Include="Classes\HttpRequest.cs" />
     <Compile Include="Classes\InputBox.cs" />
+    <Compile Include="Classes\MyTrackBar.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

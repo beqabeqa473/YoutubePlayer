@@ -1,4 +1,6 @@
-﻿namespace YoutubePlayer
+﻿using YoutubePlayer.Classes;
+
+namespace YoutubePlayer
 {
     partial class MainForm
     {
@@ -40,9 +42,9 @@
             this.cmDownloadMp3 = new System.Windows.Forms.ToolStripMenuItem();
             this.lbMain = new System.Windows.Forms.Label();
             this.lbVolume = new System.Windows.Forms.Label();
-            this.tbVolume = new System.Windows.Forms.TrackBar();
+            this.tbVolume = new MyTrackBar();
             this.lbSeek = new System.Windows.Forms.Label();
-            this.tbSeek = new System.Windows.Forms.TrackBar();
+            this.tbSeek = new MyTrackBar();
             this.lbDevice = new System.Windows.Forms.Label();
             this.cbDevice = new System.Windows.Forms.ComboBox();
             this.mbMain = new System.Windows.Forms.MenuStrip();
