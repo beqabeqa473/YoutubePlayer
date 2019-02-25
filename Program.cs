@@ -90,7 +90,7 @@ namespace YoutubePlayer
         static async Task HandleExceptionsAsync(Exception e)
         {
             Log.Error(e.ToString());
-            DialogResult dialogResult = MessageBox.Show($"Возникла непредвиденная ошибка: {e.Message}. Нажмите Да сто бы продолжить работы, или Нет для выхода из приложения. Пожалуйста отправьте отчет из окна \"Сообщить об ошибке\", подробно описав ошибку и приложив содержимое файла \"Error.log\"", "Ошибка", MessageBoxButtons.YesNo);
+            DialogResult dialogResult = MessageBox.Show($"Возникла непредвиденная ошибка: {e.Message}. Нажмите Да что бы продолжить работу, или Нет для выхода из приложения. Пожалуйста отправьте отчет из окна \"Сообщить об ошибке\", подробно описав ошибку и приложив содержимое файла \"Error.log\"", "Ошибка", MessageBoxButtons.YesNo);
             if (dialogResult == DialogResult.No)
             {
                 Environment.Exit(0);

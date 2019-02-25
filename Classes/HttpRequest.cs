@@ -16,6 +16,7 @@ namespace YoutubePlayer
             ServicePointManager.Expect100Continue = true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
             HttpClient client = new HttpClient();
+            client.Timeout = TimeSpan.FromMinutes(10);
             var postData = new FormUrlEncodedContent(data);
             HttpResponseMessage responseMessage = await client.PostAsync(apiBaseUrl, postData);
             string responseBody = await responseMessage.Content.ReadAsStringAsync();

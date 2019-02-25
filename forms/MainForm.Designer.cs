@@ -42,9 +42,7 @@ namespace YoutubePlayer
             this.cmDownloadMp3 = new System.Windows.Forms.ToolStripMenuItem();
             this.lbMain = new System.Windows.Forms.Label();
             this.lbVolume = new System.Windows.Forms.Label();
-            this.tbVolume = new MyTrackBar();
             this.lbSeek = new System.Windows.Forms.Label();
-            this.tbSeek = new MyTrackBar();
             this.lbDevice = new System.Windows.Forms.Label();
             this.cbDevice = new System.Windows.Forms.ComboBox();
             this.mbMain = new System.Windows.Forms.MenuStrip();
@@ -54,11 +52,13 @@ namespace YoutubePlayer
             this.lbDescription = new System.Windows.Forms.Label();
             this.txtDescription = new System.Windows.Forms.TextBox();
             this.tmSeek = new System.Windows.Forms.Timer(this.components);
+            this.tbVolume = new YoutubePlayer.Classes.MyTrackBar();
+            this.tbSeek = new YoutubePlayer.Classes.MyTrackBar();
             this.MainPanel.SuspendLayout();
             this.cmResults.SuspendLayout();
+            this.mbMain.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbVolume)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tbSeek)).BeginInit();
-            this.mbMain.SuspendLayout();
             this.SuspendLayout();
             // 
             // MainPanel
@@ -187,19 +187,6 @@ namespace YoutubePlayer
             this.lbVolume.TabIndex = 7;
             this.lbVolume.Text = "Громкость";
             // 
-            // tbVolume
-            // 
-            this.tbVolume.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbVolume.LargeChange = 20;
-            this.tbVolume.Location = new System.Drawing.Point(3, 381);
-            this.tbVolume.Maximum = 100;
-            this.tbVolume.Name = "tbVolume";
-            this.tbVolume.Size = new System.Drawing.Size(274, 66);
-            this.tbVolume.TabIndex = 8;
-            this.tbVolume.Value = 50;
-            this.tbVolume.Scroll += new System.EventHandler(this.tbVolume_Scroll);
-            this.tbVolume.ValueChanged += new System.EventHandler(this.tbVolume_ValueChanged);
-            // 
             // lbSeek
             // 
             this.lbSeek.AutoSize = true;
@@ -209,16 +196,6 @@ namespace YoutubePlayer
             this.lbSeek.Size = new System.Drawing.Size(234, 72);
             this.lbSeek.TabIndex = 9;
             this.lbSeek.Text = "Перемотка";
-            // 
-            // tbSeek
-            // 
-            this.tbSeek.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbSeek.Location = new System.Drawing.Point(283, 381);
-            this.tbSeek.Maximum = 100;
-            this.tbSeek.Name = "tbSeek";
-            this.tbSeek.Size = new System.Drawing.Size(234, 66);
-            this.tbSeek.TabIndex = 10;
-            this.tbSeek.Scroll += new System.EventHandler(this.tbSeek_Scroll);
             // 
             // lbDevice
             // 
@@ -307,6 +284,29 @@ namespace YoutubePlayer
             this.tmSeek.Interval = 1000;
             this.tmSeek.Tick += new System.EventHandler(this.Timer1_Tick);
             // 
+            // tbVolume
+            // 
+            this.tbVolume.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbVolume.LargeChange = 20;
+            this.tbVolume.Location = new System.Drawing.Point(3, 381);
+            this.tbVolume.Maximum = 100;
+            this.tbVolume.Name = "tbVolume";
+            this.tbVolume.Size = new System.Drawing.Size(274, 66);
+            this.tbVolume.TabIndex = 8;
+            this.tbVolume.Value = 50;
+            this.tbVolume.Scroll += new System.EventHandler(this.tbVolume_Scroll);
+            this.tbVolume.ValueChanged += new System.EventHandler(this.tbVolume_ValueChanged);
+            // 
+            // tbSeek
+            // 
+            this.tbSeek.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbSeek.Location = new System.Drawing.Point(283, 381);
+            this.tbSeek.Maximum = 100;
+            this.tbSeek.Name = "tbSeek";
+            this.tbSeek.Size = new System.Drawing.Size(234, 66);
+            this.tbSeek.TabIndex = 10;
+            this.tbSeek.Scroll += new System.EventHandler(this.tbSeek_Scroll);
+            // 
             // MainForm
             // 
             this.AccessibleRole = System.Windows.Forms.AccessibleRole.Dialog;
@@ -321,10 +321,10 @@ namespace YoutubePlayer
             this.MainPanel.ResumeLayout(false);
             this.MainPanel.PerformLayout();
             this.cmResults.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.tbVolume)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tbSeek)).EndInit();
             this.mbMain.ResumeLayout(false);
             this.mbMain.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tbVolume)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tbSeek)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -338,9 +338,7 @@ namespace YoutubePlayer
         private System.Windows.Forms.ListBox lstResults;
         private System.Windows.Forms.Label lbMain;
         private System.Windows.Forms.Label lbVolume;
-        private System.Windows.Forms.TrackBar tbVolume;
         private System.Windows.Forms.Label lbSeek;
-        private System.Windows.Forms.TrackBar tbSeek;
         private System.Windows.Forms.Label lbDevice;
         private System.Windows.Forms.ComboBox cbDevice;
         private System.Windows.Forms.Timer tmSeek;
@@ -354,5 +352,7 @@ namespace YoutubePlayer
         private System.Windows.Forms.ToolStripMenuItem cmDownloadMp3;
         private System.Windows.Forms.Label lbDescription;
         private System.Windows.Forms.TextBox txtDescription;
+        private MyTrackBar tbVolume;
+        private MyTrackBar tbSeek;
     }
 }
