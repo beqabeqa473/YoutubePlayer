@@ -17,7 +17,7 @@ namespace YoutubePlayer
         private static Update update;
 
         [STAThread]
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledExceptionAsync);
             Log.Logger = new LoggerConfiguration()
@@ -39,7 +39,9 @@ namespace YoutubePlayer
             {
             {"method", "checkupdate"}
             };
-            string response = await HttpRequest.GetRequest(values);
+            Task<string> task = Task.Run(() => HttpRequest.GetRequest(values));
+            task.Wait();
+            string response = task.Result;
             update = JToken.Parse(response).ToObject<Update>();
             if (Version.Parse(Application.ProductVersion) < Version.Parse(update.Version))
             {
@@ -55,7 +57,7 @@ namespace YoutubePlayer
             wC.DownloadFileCompleted += new AsyncCompletedEventHandler(UpdateCompleted);
                         try
                         {
-                            await wC.DownloadFileTaskAsync(new Uri(update.Download), AppDomain.CurrentDomain.FriendlyName);
+                            wC.DownloadFileAsync(new Uri(update.Download), AppDomain.CurrentDomain.FriendlyName);
                         }
                         catch (System.Net.WebException) {
                             MessageBox.Show("По некоторым причинам не удалось автоматически обновить программы. Откроется браузер для скачивания файла.", "Ошибка");
