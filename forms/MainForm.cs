@@ -112,7 +112,7 @@ namespace YoutubePlayer
                 e.SuppressKeyPress = true;
                 lstResults.Items.Clear();
                 videos = new List<Video>();
-for (var page = 1; page <+ int.MaxValue; page++) {
+for (var page = 1; page <= int.MaxValue; page++) {
                     var tempVideos = await client.SearchVideosAsync(txtSearch.Text, page);
                 if (page == 1 && tempVideos.Count == 0)
                 {
