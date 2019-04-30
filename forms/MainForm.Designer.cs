@@ -314,6 +314,7 @@ namespace YoutubePlayer
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.MainPanel);
+            this.KeyPreview = true;
             this.MainMenuStrip = this.mbMain;
             this.Name = "MainForm";
             this.Text = "Youtube audio player";

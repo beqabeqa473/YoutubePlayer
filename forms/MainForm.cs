@@ -162,6 +162,22 @@ switch (e.KeyData) {
                     Bass.BASS_ChannelPlay(stream, false);
                     }
                     break;
+                case Keys.Control | Keys.B:
+                    e.Handled = true;
+                    cmOpenInBrowser.PerformClick();
+                    break;
+                case Keys.Control | Keys.C:
+                    e.Handled = e.SuppressKeyPress = true;
+                    cmCopyToClipboard.PerformClick();
+                    break;
+                case Keys.Control | Keys.D:
+                    e.Handled = e.SuppressKeyPress = true;
+                    cmDownloadMp3.PerformClick();
+                    break;
+                case Keys.Control | Keys.Q:
+                    e.Handled = e.SuppressKeyPress = true;
+                    mbExit.PerformClick();
+                    break;
             }
         }
 
@@ -314,13 +330,6 @@ private async Task PlayFileAsync(int currentIndex)
         {
             if (lstResults.Items.Count == 0)
                 return;
-            Thread t = new Thread(CopyLink);
-            t.IsBackground = true;
-            t.SetApartmentState(ApartmentState.STA);
-            t.Start();
-        }
-
-        private void CopyLink() {
             Clipboard.SetText($"https://youtube.com/watch?v={videos[lstResults.SelectedIndex].Id}");
         }
 
