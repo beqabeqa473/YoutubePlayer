@@ -163,7 +163,7 @@ switch (e.KeyData) {
                     }
                     break;
                 case Keys.Control | Keys.B:
-                    e.Handled = true;
+                    e.Handled = e.SuppressKeyPress = true;
                     cmOpenInBrowser.PerformClick();
                     break;
                 case Keys.Control | Keys.C:
@@ -347,14 +347,25 @@ private async Task PlayFileAsync(int currentIndex)
             var json = JObject.Parse(response);
             if (!(bool)json["error"])
             {
-                ServicePointManager.Expect100Continue = true;
+                var dialog = new SaveFileDialog()
+                {
+                    Filter = "Audio (*.mp3)|*.mp3",
+                    FileName = Path.GetInvalidFileNameChars().Aggregate($"{videos[lstResults.SelectedIndex].Title}.mp3", (current, c) => current.Replace(c.ToString(), string.Empty)),
+                    RestoreDirectory = true,
+                    AddExtension = true
+                };
+                var result = dialog.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    ServicePointManager.Expect100Continue = true;
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
                 using (var wC = new WebClient())
                 {
                     wC.DownloadFileCompleted += new AsyncCompletedEventHandler(DownloadCompletedAsync);
-                    await wC.DownloadFileTaskAsync(new Uri(json["file"].ToString()), Path.GetInvalidFileNameChars().Aggregate($"{videos[lstResults.SelectedIndex].Title}.mp3", (current, c) => current.Replace(c.ToString(), string.Empty)));
+                        await wC.DownloadFileTaskAsync(new Uri(json["file"].ToString()), dialog.FileName);
+                    }
                 }
-        }
+            }
     }
 
         private async void DownloadCompletedAsync(object sender, AsyncCompletedEventArgs e)
