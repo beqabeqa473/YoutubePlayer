@@ -71,10 +71,12 @@ namespace YoutubePlayer
                         if (isActive == BASSActive.BASS_ACTIVE_PLAYING)
                         {
                             Bass.BASS_ChannelPause(stream);
+                            tmSeek.Enabled = false;
                         }
                         else if (isActive == BASSActive.BASS_ACTIVE_PAUSED)
                         {
                             Bass.BASS_ChannelPlay(stream, false);
+                            tmSeek.Enabled = true;
                         }
                         break;
                 }
@@ -117,9 +119,11 @@ for (var page = 1; page <= int.MaxValue; page++) {
                     var tempVideos = await client.SearchVideosAsync(txtSearch.Text, page);
                 if (page == 1 && tempVideos.Count == 0)
                 {
-                MessageBox.Show("Ничего не найдено", "Ошибка");
+                        sbStatus.Text = "Ничего не найдено";
+                        MessageBox.Show("Ничего не найдено", "Ошибка");
                 break;
                 }
+                    sbStatus.Text = "Производится поиск";
                     var countDelta = 0;
                     foreach (var video in tempVideos)
                 {
@@ -136,8 +140,11 @@ for (var page = 1; page <= int.MaxValue; page++) {
                     }
 
                     if (countDelta <= 0)
-                                            break;
-                                }
+                    {
+                        sbStatus.Text = $"Найдено результатов: {videos.Count()}";
+                        break;
+                    }
+                    }
             }
         }
 
@@ -157,10 +164,12 @@ switch (e.KeyData) {
                     if (isActive == BASSActive.BASS_ACTIVE_PLAYING)
                     {
                     Bass.BASS_ChannelPause(stream);
+                        tmSeek.Enabled = false;
                     }
                     else if (isActive == BASSActive.BASS_ACTIVE_PAUSED)
                     {
                     Bass.BASS_ChannelPlay(stream, false);
+                        tmSeek.Enabled = true;
                     }
                     break;
                 case Keys.Control | Keys.B:
@@ -194,6 +203,7 @@ private async Task PlayFileAsync(int currentIndex)
                 Bass.BASS_ChannelSetAttribute(stream, BASSAttribute.BASS_ATTRIB_VOL, tbVolume.Value / 100f);
                 Bass.BASS_ChannelSetSync(stream, BASSSync.BASS_SYNC_END, 0, syncCallback, IntPtr.Zero);
                 Bass.BASS_ChannelPlay(stream, false);
+                tmSeek.Enabled = true;
             }
             catch (YoutubeExplode.Exceptions.VideoUnplayableException ex)
             {
@@ -290,9 +300,13 @@ private async Task PlayFileAsync(int currentIndex)
 
         private void Timer1_Tick(object sender, EventArgs e)
         {
-            double len = Bass.BASS_ChannelGetLength(stream);
-            double pos = Bass.BASS_ChannelGetPosition(stream);
+            long len = Bass.BASS_ChannelGetLength(stream);
+            long pos = Bass.BASS_ChannelGetPosition(stream);
+            double totalTime = Bass.BASS_ChannelBytes2Seconds(stream, len);
+            double elapsedTime = Bass.BASS_ChannelBytes2Seconds(stream, pos);
+            double remainingTime = totalTime - elapsedTime;
             tbSeek.Value = Math.Min(tbSeek.Maximum, (int)(100 * pos / len));
+            sbStatus.Text = $"Длительность: {TimeSpan.FromSeconds((int)totalTime)}, прошло: {TimeSpan.FromSeconds((int)elapsedTime)}, осталось: {TimeSpan.FromSeconds((int)remainingTime)}";
         }
 
         private void tbSeek_Scroll(object sender, EventArgs e)

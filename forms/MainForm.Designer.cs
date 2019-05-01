@@ -52,6 +52,7 @@ namespace YoutubePlayer
             this.lbDescription = new System.Windows.Forms.Label();
             this.txtDescription = new System.Windows.Forms.TextBox();
             this.tmSeek = new System.Windows.Forms.Timer(this.components);
+            this.sbStatus = new System.Windows.Forms.StatusStrip();
             this.tbVolume = new YoutubePlayer.Classes.MyTrackBar();
             this.tbSeek = new YoutubePlayer.Classes.MyTrackBar();
             this.MainPanel.SuspendLayout();
@@ -77,6 +78,7 @@ namespace YoutubePlayer
             this.MainPanel.Controls.Add(this.lbSeek, 1, 4);
             this.MainPanel.Controls.Add(this.tbSeek, 1, 5);
             this.MainPanel.Controls.Add(this.lbDevice, 2, 4);
+            this.MainPanel.Controls.Add(this.sbStatus, 0, 6);
             this.MainPanel.Controls.Add(this.cbDevice, 2, 5);
             this.MainPanel.Controls.Add(this.mbMain, 0, 1);
             this.MainPanel.Controls.Add(this.lbDescription, 2, 2);
@@ -84,13 +86,14 @@ namespace YoutubePlayer
             this.MainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainPanel.Location = new System.Drawing.Point(0, 0);
             this.MainPanel.Name = "MainPanel";
-            this.MainPanel.RowCount = 6;
+            this.MainPanel.RowCount = 7;
             this.MainPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
-            this.MainPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16F));
-            this.MainPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16F));
-            this.MainPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16F));
-            this.MainPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16F));
-            this.MainPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16F));
+            this.MainPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 13F));
+            this.MainPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 13F));
+            this.MainPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 13F));
+            this.MainPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 13F));
+            this.MainPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 13F));
+            this.MainPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 15F));
             this.MainPanel.Size = new System.Drawing.Size(800, 450);
             this.MainPanel.TabIndex = 0;
             // 
@@ -98,16 +101,16 @@ namespace YoutubePlayer
             // 
             this.lbSearch.AutoSize = true;
             this.lbSearch.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbSearch.Location = new System.Drawing.Point(3, 162);
+            this.lbSearch.Location = new System.Drawing.Point(3, 148);
             this.lbSearch.Name = "lbSearch";
-            this.lbSearch.Size = new System.Drawing.Size(274, 72);
+            this.lbSearch.Size = new System.Drawing.Size(274, 58);
             this.lbSearch.TabIndex = 1;
             this.lbSearch.Text = "Поиск";
             // 
             // txtSearch
             // 
             this.txtSearch.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtSearch.Location = new System.Drawing.Point(3, 237);
+            this.txtSearch.Location = new System.Drawing.Point(3, 209);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(274, 20);
             this.txtSearch.TabIndex = 2;
@@ -117,9 +120,9 @@ namespace YoutubePlayer
             // 
             this.lbResults.AutoSize = true;
             this.lbResults.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbResults.Location = new System.Drawing.Point(283, 162);
+            this.lbResults.Location = new System.Drawing.Point(283, 148);
             this.lbResults.Name = "lbResults";
-            this.lbResults.Size = new System.Drawing.Size(234, 72);
+            this.lbResults.Size = new System.Drawing.Size(234, 58);
             this.lbResults.TabIndex = 3;
             this.lbResults.Text = "Результаты поиска";
             // 
@@ -128,9 +131,9 @@ namespace YoutubePlayer
             this.lstResults.ContextMenuStrip = this.cmResults;
             this.lstResults.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstResults.FormattingEnabled = true;
-            this.lstResults.Location = new System.Drawing.Point(283, 237);
+            this.lstResults.Location = new System.Drawing.Point(283, 209);
             this.lstResults.Name = "lstResults";
-            this.lstResults.Size = new System.Drawing.Size(234, 66);
+            this.lstResults.Size = new System.Drawing.Size(234, 52);
             this.lstResults.TabIndex = 4;
             this.lstResults.SelectedIndexChanged += new System.EventHandler(this.lstResults_SelectedIndexChangedAsync);
             this.lstResults.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lstResults_KeyDownAsync);
@@ -181,9 +184,9 @@ namespace YoutubePlayer
             // 
             this.lbVolume.AutoSize = true;
             this.lbVolume.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbVolume.Location = new System.Drawing.Point(3, 306);
+            this.lbVolume.Location = new System.Drawing.Point(3, 264);
             this.lbVolume.Name = "lbVolume";
-            this.lbVolume.Size = new System.Drawing.Size(274, 72);
+            this.lbVolume.Size = new System.Drawing.Size(274, 58);
             this.lbVolume.TabIndex = 7;
             this.lbVolume.Text = "Громкость";
             // 
@@ -191,9 +194,9 @@ namespace YoutubePlayer
             // 
             this.lbSeek.AutoSize = true;
             this.lbSeek.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbSeek.Location = new System.Drawing.Point(283, 306);
+            this.lbSeek.Location = new System.Drawing.Point(283, 264);
             this.lbSeek.Name = "lbSeek";
-            this.lbSeek.Size = new System.Drawing.Size(234, 72);
+            this.lbSeek.Size = new System.Drawing.Size(234, 58);
             this.lbSeek.TabIndex = 9;
             this.lbSeek.Text = "Перемотка";
             // 
@@ -201,9 +204,9 @@ namespace YoutubePlayer
             // 
             this.lbDevice.AutoSize = true;
             this.lbDevice.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbDevice.Location = new System.Drawing.Point(523, 306);
+            this.lbDevice.Location = new System.Drawing.Point(523, 264);
             this.lbDevice.Name = "lbDevice";
-            this.lbDevice.Size = new System.Drawing.Size(274, 72);
+            this.lbDevice.Size = new System.Drawing.Size(274, 58);
             this.lbDevice.TabIndex = 11;
             this.lbDevice.Text = "Устройство вывода";
             // 
@@ -212,7 +215,7 @@ namespace YoutubePlayer
             this.cbDevice.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cbDevice.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbDevice.FormattingEnabled = true;
-            this.cbDevice.Location = new System.Drawing.Point(523, 381);
+            this.cbDevice.Location = new System.Drawing.Point(523, 325);
             this.cbDevice.Name = "cbDevice";
             this.cbDevice.Size = new System.Drawing.Size(274, 21);
             this.cbDevice.TabIndex = 12;
@@ -262,36 +265,45 @@ namespace YoutubePlayer
             // 
             this.lbDescription.AutoSize = true;
             this.lbDescription.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lbDescription.Location = new System.Drawing.Point(523, 162);
+            this.lbDescription.Location = new System.Drawing.Point(523, 148);
             this.lbDescription.Name = "lbDescription";
-            this.lbDescription.Size = new System.Drawing.Size(274, 72);
+            this.lbDescription.Size = new System.Drawing.Size(274, 58);
             this.lbDescription.TabIndex = 4;
             this.lbDescription.Text = "Описание";
             // 
             // txtDescription
             // 
             this.txtDescription.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtDescription.Location = new System.Drawing.Point(523, 237);
+            this.txtDescription.Location = new System.Drawing.Point(523, 209);
             this.txtDescription.Multiline = true;
             this.txtDescription.Name = "txtDescription";
             this.txtDescription.ReadOnly = true;
-            this.txtDescription.Size = new System.Drawing.Size(274, 66);
+            this.txtDescription.Size = new System.Drawing.Size(274, 52);
             this.txtDescription.TabIndex = 5;
             // 
             // tmSeek
             // 
-            this.tmSeek.Enabled = true;
             this.tmSeek.Interval = 1000;
             this.tmSeek.Tick += new System.EventHandler(this.Timer1_Tick);
+            // 
+            // sbStatus
+            // 
+            this.MainPanel.SetColumnSpan(this.sbStatus, 3);
+            this.sbStatus.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sbStatus.Location = new System.Drawing.Point(0, 380);
+            this.sbStatus.Name = "sbStatus";
+            this.sbStatus.Size = new System.Drawing.Size(800, 70);
+            this.sbStatus.TabIndex = 14;
+            this.sbStatus.Text = "Строка состояния";
             // 
             // tbVolume
             // 
             this.tbVolume.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbVolume.LargeChange = 20;
-            this.tbVolume.Location = new System.Drawing.Point(3, 381);
+            this.tbVolume.Location = new System.Drawing.Point(3, 325);
             this.tbVolume.Maximum = 100;
             this.tbVolume.Name = "tbVolume";
-            this.tbVolume.Size = new System.Drawing.Size(274, 66);
+            this.tbVolume.Size = new System.Drawing.Size(274, 52);
             this.tbVolume.TabIndex = 8;
             this.tbVolume.Value = 50;
             this.tbVolume.Scroll += new System.EventHandler(this.tbVolume_Scroll);
@@ -300,10 +312,10 @@ namespace YoutubePlayer
             // tbSeek
             // 
             this.tbSeek.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tbSeek.Location = new System.Drawing.Point(283, 381);
+            this.tbSeek.Location = new System.Drawing.Point(283, 325);
             this.tbSeek.Maximum = 100;
             this.tbSeek.Name = "tbSeek";
-            this.tbSeek.Size = new System.Drawing.Size(234, 66);
+            this.tbSeek.Size = new System.Drawing.Size(234, 52);
             this.tbSeek.TabIndex = 10;
             this.tbSeek.Scroll += new System.EventHandler(this.tbSeek_Scroll);
             // 
@@ -355,5 +367,6 @@ namespace YoutubePlayer
         private System.Windows.Forms.TextBox txtDescription;
         private MyTrackBar tbVolume;
         private MyTrackBar tbSeek;
+        private System.Windows.Forms.StatusStrip sbStatus;
     }
 }
