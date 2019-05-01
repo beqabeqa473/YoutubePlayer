@@ -1,8 +1,10 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Microsoft.Win32;
+using Newtonsoft.Json.Linq;
 using Serilog;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Security.Cryptography;
@@ -25,7 +27,22 @@ namespace YoutubePlayer
                 .CreateLogger();
             Log.Information($"Using os: {getOSInfo()}");
             Log.Information($"Software version: {Version.Parse(Application.ProductVersion).ToString()}");
-            try
+            const string subkey = @"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\";
+            using (RegistryKey ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(subkey))
+            {
+                if (ndpKey != null && ndpKey.GetValue("Release") != null)
+                {
+                    int relKey = (int)ndpKey.GetValue("Release");
+                    if (relKey < 461808)
+                    {
+                        MessageBox.Show("Это приложение требует установленного в системе .net framework версии 4.7.2 или позднее. Нажмите OK, что бы скачать данную версию с официального сайта microsoft и установите его", "Внимание");
+                        Process.Start(@"https://dotnet.microsoft.com/download/thank-you/net472");
+                        Environment.Exit(0);
+                    }
+                }
+            }
+
+                try
             {
                 if (File.Exists(AppDomain.CurrentDomain.FriendlyName + ".back")) File.Delete(AppDomain.CurrentDomain.FriendlyName + ".back");
             }
