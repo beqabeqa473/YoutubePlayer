@@ -353,6 +353,7 @@ private async Task PlayFileAsync(int currentIndex)
             if (lstResults.Items.Count == 0)
                 return;
             Console.Beep(500, 500);
+            sbStatus.Text = "Идет Конвертация файла. пожалуйста, подождите!";
             var values = new Dictionary<string, string>
             {
             {"method", "getmp3"},
@@ -376,7 +377,8 @@ private async Task PlayFileAsync(int currentIndex)
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
                 using (var wC = new WebClient())
                 {
-                    wC.DownloadFileCompleted += new AsyncCompletedEventHandler(DownloadCompletedAsync);
+                        wC.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgressChanged);
+                        wC.DownloadFileCompleted += new AsyncCompletedEventHandler(DownloadCompletedAsync);
                         await wC.DownloadFileTaskAsync(new Uri(json["file"].ToString()), dialog.FileName);
                     }
                 }
@@ -386,12 +388,18 @@ private async Task PlayFileAsync(int currentIndex)
         private async void DownloadCompletedAsync(object sender, AsyncCompletedEventArgs e)
         {
             Console.Beep(1000, 500);
+            sbStatus.Text = "Скачивание завершено";
             var values = new Dictionary<string, string>
             {
             {"method", "delete"},
             {"id", videos[lstResults.SelectedIndex].Id.ToString()}
             };
             string response = await HttpRequest.GetRequest(values);
+        }
+
+        private void ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            sbStatus.Text = $"Скачано {e.ProgressPercentage} процентов";
         }
 
         private async void lstResults_SelectedIndexChangedAsync(object sender, EventArgs e)
