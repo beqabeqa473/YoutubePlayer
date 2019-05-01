@@ -110,6 +110,7 @@ namespace YoutubePlayer
                 if (txtSearch.Text == "")
                     return;
                 e.SuppressKeyPress = true;
+                txtSearch.SelectAll();
                 lstResults.Items.Clear();
                 videos = new List<Video>();
 for (var page = 1; page <= int.MaxValue; page++) {
